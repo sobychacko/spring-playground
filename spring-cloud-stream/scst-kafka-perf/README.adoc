@@ -1,0 +1,25 @@
+
+Run a single kafka cluster locally:
+
+and run the following scripts:
+
+or start kafka using the provided docker compose script:
+
+docker-compose up -d
+
+start the shell
+
+./start-kafka-shell.sh
+
+cd $KAFKA_HOME
+* zookeeper-ip below is localhost on linux or 192.168.99.100 on mac osx.
+
+bin/kafka-topics.sh --zookeeper 192.168.99.100:2181 --create --topic foobar --partitions 3 --replication-factor 1
+bin/kafka-topics.sh --zookeeper 192.168.99.100:2181 --describe foobar
+
+Pre-load 1 million messages with 1K size:
+
+bin/kafka-producer-perf-test.sh --num-records 1000000 --record-size 1024 --producer-props bootstrap.servers=192.168.99.100:9092 zk.connect=192.168.99.100:2181 batch.size=100  --throughput 100000 --topic foobar
+
+java -jar scst-kafka-perf-0.0.1-SNAPSHOT.jar --spring.cloud.stream.kafka.binder.brokers=192.168.99.100 --spring.cloud.stream.kafka.binder.zkNodes=192.168.99.100 --non.declarative=true --num.messages=1000000 --print.on.every=10000 --spring.cloud.stream.bindings.input.destination=foobar --spring.kafka.consumer.groupId=scst-foo-4
+
