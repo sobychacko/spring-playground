@@ -1,5 +1,10 @@
+== What is this app?
 
-Run a single kafka cluster locally:
+This app allows to run throughput performance tests against a Kafka cluster using the Spring Cloud Stream consumer.
+
+It allows the testing of two different flavors/uses of StreamListener (one is a delcarative approach where we declaratively handle the input message and the other one is non declarative which means that on each message arrived at the input channnel, it needs to resolve the method arguments and then invoke the target method)
+
+== Run a single kafka cluster locally:
 
 and run the following scripts:
 
