@@ -1,22 +1,20 @@
 == What is this app?
 
-This app allows to run throughput performance tests against a Kafka cluster using the Spring Cloud Stream consumer.
+This app is used to run throughput performance tests on Spring Cloud Stream consumer against the Kafka binder.
 
-It allows the testing of two different flavors/uses of StreamListener (one is a delcarative approach where we declaratively handle the input message and the other one is non declarative which means that on each message arrived at the input channnel, it needs to resolve the method arguments and then invoke the target method)
+It allows the testing of two different usage patterns of StreamListener (one is a delcarative approach where we declaratively handle the input message and the other one is a non declarative approach which means that on each message arrival at the input channnel, target method arguments are resolved and then invoke the method)
 
-== Run a single kafka cluster locally:
+=== Before running the app, make sure that you have Kafka environment up and running. Use one of the following methods
 
-and run the following scripts:
+1. You can use a local Kafka cluster (single node clusters are enough)
+2. Or a fdull blown Kafka cluster somewhere on powerful servers or platforms (GCP, AWS, Rackspace etc.)
+3. Or you can also run Kafka inside a docker ennvironment. For this go to the docker directory in this repo and invoke the command `docker-compose up -d`.
+   
+Once you have a kafka environment, do the following.
 
-or start kafka using the provided docker compose script:
+1. Go to your kafka home. If you are using the docker images, invoke the script `start-kafka-shell.sh` and then `cd $KAFKA_HOME`.
 
-docker-compose up -d
 
-start the shell
-
-./start-kafka-shell.sh
-
-cd $KAFKA_HOME
 * zookeeper-ip below is localhost on linux or 192.168.99.100 on mac osx.
 
 bin/kafka-topics.sh --zookeeper 192.168.99.100:2181 --create --topic foobar --partitions 3 --replication-factor 1
