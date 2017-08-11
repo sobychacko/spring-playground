@@ -30,13 +30,17 @@ Go to the root of the repository and do: `./mvnw clean package`
 === Explanation of the custom properties
 
 `num.messages` - messages to consume
+
 `print.on.every` - Print a message with the current count consumed
+
 `non-declarative` - invoking the non-declarative stream listener
+
 `declarative` - invoking the declarative stream listener`
 
 The following 2 properties can be used when running multiple consumers. This would effectively track the progress of the message consumption across the consumers. Basically, uses a scheduled task internally to see if we stopeed consuming for a duration. If so, determines that the consumer is done.
 
 `multi.consumer.non.declarative=true` 
+
 `multi.consumer.declarative=true` 
 
 ==== Running non-declarative StreamListener in a single consumer mode that consumes 1 million messages and prints every 10K messages:
