@@ -1,10 +1,10 @@
 == What is this app?
 
-This app is used to run throughput performance tests on Spring Cloud Stream consumer against the Kafka binder.
+This app can be used to run throughput performance tests on Spring Cloud Stream consumer using the Kafka binder against a Kafka cluster.
 
 It allows the testing of two different usage patterns of StreamListener (one is a delcarative approach where we declaratively handle the input message and the other one is a non declarative approach which means that on each message arrival at the input channnel, target method arguments are resolved and then invoke the method)
 
-==== Before running the app, make sure that you have Kafka environment up and running. Use one of the following methods
+==== Before running the app, make sure that you have a Kafka environment up and running. Use one of the following methods
 
 1. You can use a local Kafka cluster (single node clusters are enough)
 2. Or a Kafka cluster somewhere on powerful servers or platforms (GCP, AWS, Rackspace etc.)
