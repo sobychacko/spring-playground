@@ -46,65 +46,6 @@ public class ScstKafkaPerfApplication implements CommandLineRunner {
 		Thread.sleep(3000);
 	}
 
-	@Bean
-	@ConditionalOnProperty("non.declarative")
-	public NonDeclarativeStreamListener nonDeclarative() {
-		return new NonDeclarativeStreamListener(latch, numMessages,
-				printStatusCount);
-	}
-
-	@Bean
-	@ConditionalOnProperty("declarative")
-	public DeclarativeStreamListener declarative() {
-		return new DeclarativeStreamListener(latch, numMessages,
-				printStatusCount);
-	}
-
-	@Component
-	@ConditionalOnProperty({"multi.consumer.non.declarative"})
-	public class FooTask {
-
-		@Autowired
-		NonDeclarativeStreamListener nonDeclarativeStreamListener;
-
-		@Scheduled(fixedRate = 1000, initialDelay = 4000)
-		public void foo() {
-			if (nonDeclarativeStreamListener.currentCount == prevN) {
-				if (nonDeclarativeStreamListener.watch.isRunning()) {
-					nonDeclarativeStreamListener.watch.stop();
-					System.out.println(nonDeclarativeStreamListener.watch.toString() + "... "
-							+ (nonDeclarativeStreamListener.currentCount / ((float) nonDeclarativeStreamListener.watch.getTotalTimeMillis() / (float) 1000))
-							+ " messages per second");
-					latch.countDown();
-				}
-			}
-			prevN = nonDeclarativeStreamListener.currentCount;
-		}
-
-	}
-
-	@Component
-	@ConditionalOnProperty({"multi.consumer.declarative"})
-	public class BarTask {
-
-		@Autowired
-		DeclarativeStreamListener declarativeStreamListener;
-
-		@Scheduled(fixedRate = 1000, initialDelay = 4000)
-		public void bar() {
-			if (declarativeStreamListener.currentCount == prevN) {
-				if (declarativeStreamListener.watch.isRunning()) {
-					declarativeStreamListener.watch.stop();
-					System.out.println(declarativeStreamListener.watch.toString() + "... "
-							+ (declarativeStreamListener.currentCount / ((float) declarativeStreamListener.watch.getTotalTimeMillis() / (float) 1000))
-							+ " messages per second");
-					latch.countDown();
-				}
-			}
-			prevN = declarativeStreamListener.currentCount;
-		}
-	}
-
 	public static class NonDeclarativeStreamListener {
 
 		private final CountDownLatch latch;
@@ -147,7 +88,7 @@ public class ScstKafkaPerfApplication implements CommandLineRunner {
 
 		private final CountDownLatch latch;
 
-		private StopWatch watch = new StopWatch("Receive 30M Stream");
+		private StopWatch watch;
 
 		private int currentCount;
 
@@ -184,5 +125,63 @@ public class ScstKafkaPerfApplication implements CommandLineRunner {
 		}
 	}
 
+	@Bean
+	@ConditionalOnProperty("non.declarative")
+	public NonDeclarativeStreamListener nonDeclarative() {
+		return new NonDeclarativeStreamListener(latch, numMessages,
+				printStatusCount);
+	}
+
+	@Bean
+	@ConditionalOnProperty("declarative")
+	public DeclarativeStreamListener declarative() {
+		return new DeclarativeStreamListener(latch, numMessages,
+				printStatusCount);
+	}
+
+	@Component
+	@ConditionalOnProperty({"multi.consumer.non.declarative"})
+	public class NonDeclarativeMultiConsumers {
+
+		@Autowired
+		NonDeclarativeStreamListener nonDeclarativeStreamListener;
+
+		@Scheduled(fixedRate = 1000, initialDelay = 4000)
+		public void foo() {
+			if (nonDeclarativeStreamListener.currentCount == prevN) {
+				if (nonDeclarativeStreamListener.watch.isRunning()) {
+					nonDeclarativeStreamListener.watch.stop();
+					System.out.println(nonDeclarativeStreamListener.watch.toString() + "... "
+							+ (nonDeclarativeStreamListener.currentCount / ((float) nonDeclarativeStreamListener.watch.getTotalTimeMillis() / (float) 1000))
+							+ " messages per second");
+					latch.countDown();
+				}
+			}
+			prevN = nonDeclarativeStreamListener.currentCount;
+		}
+
+	}
+
+	@Component
+	@ConditionalOnProperty({"multi.consumer.declarative"})
+	public class DeclarativeMultiConsumers {
+
+		@Autowired
+		DeclarativeStreamListener declarativeStreamListener;
+
+		@Scheduled(fixedRate = 1000, initialDelay = 4000)
+		public void bar() {
+			if (declarativeStreamListener.currentCount == prevN) {
+				if (declarativeStreamListener.watch.isRunning()) {
+					declarativeStreamListener.watch.stop();
+					System.out.println(declarativeStreamListener.watch.toString() + "... "
+							+ (declarativeStreamListener.currentCount / ((float) declarativeStreamListener.watch.getTotalTimeMillis() / (float) 1000))
+							+ " messages per second");
+					latch.countDown();
+				}
+			}
+			prevN = declarativeStreamListener.currentCount;
+		}
+	}
 }
 
