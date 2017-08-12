@@ -28,5 +28,5 @@ Go to the root of the repository and do: `./mvnw clean package`
 * By default we use the docker container IP (mac osx specific) in the `application.yml` for Kafka broker and zookeeper.
 Change it in `application.yml` (which requires a rebuild) or pass them as runtime arguments as below.
 
-`spring.cloud.stream.kstream.binder.brokers=<Broker IP Address>`
+`spring.cloud.stream.kstream.binder.brokers=<Broker IP Address>` +
 `spring.cloud.stream.kstream.binder.zkNodes=<Zookeeper IP Address>`
