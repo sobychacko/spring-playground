@@ -30,3 +30,5 @@ Change it in `application.yml` (which requires a rebuild) or pass them as runtim
 
 `spring.cloud.stream.kstream.binder.brokers=<Broker IP Address>` +
 `spring.cloud.stream.kstream.binder.zkNodes=<Zookeeper IP Address>`
+
+Enter some text in the console producer and watch the output in the console consumer. 
